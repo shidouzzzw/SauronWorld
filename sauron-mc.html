@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SauronMC — oyna-sauron.world</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Oxanium:wght@400;600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --green: #4ade80;
+  --gold: #fbbf24;
+  --teal: #2dd4bf;
+  --bg: #060d06;
+  --card: #0c160c;
+  --border: #1a2e1a;
+  --text: #a3c4a3;
+  --white: #e8f5e8;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Nunito', sans-serif;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%; left: 50%;
+  transform: translateX(-50%);
+  width: 900px; height: 700px;
+  background: radial-gradient(ellipse, rgba(74,222,128,0.045) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 64px;
+  background: rgba(6,13,6,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  color: var(--white);
+}
+.logo em { color: var(--green); font-style: normal; }
+nav ul { list-style: none; display: flex; gap: 36px; }
+nav a {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 12px; font-weight: 700;
+  letter-spacing: 2px;
+  color: var(--text); text-decoration: none;
+  transition: color .2s;
+}
+nav a:hover { color: var(--green); }
+
+/* HERO */
+.hero {
+  position: relative; z-index: 1;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+}
+
+.hero-live {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'Oxanium', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 4px;
+  color: var(--green);
+  border: 1px solid rgba(74,222,128,0.3);
+  padding: 8px 22px; margin-bottom: 48px;
+  opacity: 0; animation: up .6s .1s forwards;
+}
+.dot {
+  width: 7px; height: 7px;
+  background: var(--green); border-radius: 50%;
+  animation: blink 1.6s infinite;
+  flex-shrink: 0;
+}
+
+.hero h1 {
+  font-family: 'Oxanium', sans-serif;
+  font-size: clamp(56px, 12vw, 116px);
+  font-weight: 800; line-height: 1; letter-spacing: -2px;
+  color: var(--white);
+  margin-bottom: 8px;
+  opacity: 0; animation: up .6s .2s forwards;
+}
+.hero h1 em { color: var(--green); font-style: normal; }
+
+.hero-sub {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(9px, 1.5vw, 14px);
+  color: var(--gold); letter-spacing: 6px;
+  margin-bottom: 28px;
+  opacity: 0; animation: up .6s .3s forwards;
+}
+
+.hero p {
+  font-size: 17px; font-weight: 400; color: #4a724a;
+  max-width: 400px; line-height: 1.85;
+  margin-bottom: 48px;
+  opacity: 0; animation: up .6s .4s forwards;
+}
+
+/* IP display */
+.ip-display {
+  display: inline-flex; align-items: stretch;
+  border: 1px solid rgba(74,222,128,0.28);
+  background: rgba(74,222,128,0.03);
+  margin-bottom: 32px;
+  opacity: 0; animation: up .6s .5s forwards;
+}
+.ip-display .lbl {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  color: var(--green); opacity: .55;
+  padding: 14px 16px;
+  border-right: 1px solid rgba(74,222,128,0.2);
+  display: flex; align-items: center;
+}
+.ip-display .val {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 16px; font-weight: 700;
+  color: var(--white); letter-spacing: 1px;
+  padding: 14px 22px;
+  display: flex; align-items: center;
+}
+
+/* BUTTONS */
+.btns {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  justify-content: center; margin-bottom: 48px;
+  opacity: 0; animation: up .6s .6s forwards;
+}
+.btn {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 3px;
+  padding: 14px 30px; cursor: pointer;
+  border: 2px solid; background: transparent;
+  transition: all .22s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-fill {
+  background: var(--green);
+  border-color: var(--green);
+  color: #000;
+}
+.btn-fill:hover {
+  background: transparent;
+  color: var(--green);
+  box-shadow: 0 0 28px rgba(74,222,128,0.2);
+}
+.btn-fill.copied {
+  background: transparent;
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.btn-outline {
+  border-color: rgba(255,255,255,0.2);
+  color: var(--white);
+}
+.btn-outline:hover { border-color: rgba(255,255,255,0.5); }
+
+/* BADGES */
+.badges {
+  display: flex; gap: 12px; flex-wrap: wrap;
+  justify-content: center;
+  opacity: 0; animation: up .6s .7s forwards;
+}
+.badge {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 2px;
+  border: 1px solid; padding: 8px 16px;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.b-java    { border-color: rgba(249,115,22,.35); color: #fb923c; }
+.b-bedrock { border-color: rgba(45,212,191,.35); color: var(--teal); }
+.b-live    { border-color: rgba(74,222,128,.35); color: var(--green); }
+
+/* DIVIDERS */
+.d-grass {
+  width: 100%; height: 12px; position: relative; z-index: 1;
+  background: repeating-linear-gradient(90deg,
+    #16a34a 0,#16a34a 12px, #15803d 12px,#15803d 24px,
+    #4ade80 24px,#4ade80 36px, #166534 36px,#166534 48px);
+}
+.d-dirt {
+  width: 100%; height: 12px; position: relative; z-index: 1;
+  background: repeating-linear-gradient(90deg,
+    #78350f 0,#78350f 12px, #92400e 12px,#92400e 24px,
+    #6b3a1f 24px,#6b3a1f 36px, #7c4a2a 36px,#7c4a2a 48px);
+}
+
+/* SECTIONS */
+.sec {
+  position: relative; z-index: 1;
+  max-width: 1080px; margin: 0 auto; padding: 80px 32px;
+}
+.sec-eyebrow {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 11px; font-weight: 700; letter-spacing: 5px;
+  color: var(--green); opacity: .55;
+  text-align: center; margin-bottom: 10px;
+}
+.sec-title {
+  font-family: 'Oxanium', sans-serif;
+  font-size: clamp(24px, 4vw, 40px); font-weight: 800;
+  color: var(--white); text-align: center; margin-bottom: 52px;
+}
+.sec-title span { color: var(--green); }
+
+/* INFO CARDS */
+.grid-4 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.icard {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 28px 22px;
+  transition: border-color .3s, transform .3s;
+}
+.icard:hover { border-color: rgba(74,222,128,.3); transform: translateY(-4px); }
+.icard-icon { font-size: 26px; margin-bottom: 14px; }
+.icard h3 {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 12px; font-weight: 800; letter-spacing: 2px;
+  color: var(--green); margin-bottom: 10px;
+}
+.icard p { font-size: 14px; line-height: 1.8; color: #4a724a; }
+.icard strong { color: var(--white); font-weight: 700; }
+
+/* MODE CARDS */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+.mcard {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 36px 30px; position: relative; overflow: hidden;
+  transition: transform .3s, border-color .3s;
+}
+.mcard::after {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  transform: scaleX(0); transition: transform .3s;
+  transform-origin: left;
+}
+.mcard:hover { transform: translateY(-6px); }
+.mcard:hover::after { transform: scaleX(1); }
+.mcard.smp:hover  { border-color: rgba(74,222,128,.3); }
+.mcard.smp::after { background: var(--green); }
+.mcard.towny:hover { border-color: rgba(251,191,36,.3); }
+.mcard.towny::after { background: var(--gold); }
+
+.mcard-tag {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  border: 1px solid; padding: 5px 12px;
+  display: inline-block; margin-bottom: 18px;
+}
+.smp .mcard-tag   { color: var(--green); border-color: rgba(74,222,128,.4); }
+.towny .mcard-tag { color: var(--gold);  border-color: rgba(251,191,36,.4); }
+.mcard h2 {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 40px; font-weight: 800; letter-spacing: 4px; margin-bottom: 14px;
+}
+.smp h2   { color: var(--green); }
+.towny h2 { color: var(--gold); }
+.mcard > p { font-size: 15px; line-height: 1.8; color: #4a724a; margin-bottom: 26px; }
+.feats { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+.feats li {
+  font-size: 14px; font-weight: 600; color: #5a8a5a;
+  display: flex; align-items: center; gap: 9px;
+}
+.smp   .feats li::before { content: '▸'; color: var(--green); }
+.towny .feats li::before { content: '▸'; color: var(--gold); }
+
+/* ADMIN CARDS */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+.acard {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 44px 28px 32px; text-align: center;
+  transition: transform .3s, border-color .3s;
+  position: relative;
+}
+.acard:hover { transform: translateY(-6px); border-color: rgba(251,191,36,.3); }
+.acard-av {
+  width: 64px; height: 64px; margin: 0 auto 20px;
+  border: 2px solid rgba(251,191,36,.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+  background: linear-gradient(135deg,#0f1f0f,#1a2e1a);
+  position: relative;
+}
+.crown {
+  position: absolute; top: -18px; left: 50%;
+  transform: translateX(-50%); font-size: 17px;
+}
+.acard h3 {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 18px; font-weight: 800; color: var(--white);
+  margin-bottom: 12px;
+}
+.acard-role {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 10px; font-weight: 700; letter-spacing: 3px;
+  color: var(--gold);
+  border: 1px solid rgba(251,191,36,.3);
+  padding: 6px 16px; display: inline-block;
+}
+
+/* FOOTER */
+footer {
+  position: relative; z-index: 1;
+  background: #040904; border-top: 1px solid var(--border);
+  text-align: center; padding: 48px 24px;
+}
+.f-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px; color: var(--green); margin-bottom: 16px;
+}
+footer p { font-size: 14px; color: #2a4a2a; line-height: 2.2; }
+.f-ip {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 3px;
+  color: rgba(74,222,128,.45); margin-top: 20px;
+}
+
+.btn-map {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 11px; font-weight: 800; letter-spacing: 2px;
+  padding: 12px 24px; cursor: pointer;
+  border: 2px solid rgba(251,191,36,.5);
+  background: rgba(251,191,36,0.06);
+  color: var(--gold);
+  transition: all .22s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-map:hover {
+  background: rgba(251,191,36,0.14);
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(251,191,36,0.15);
+}
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s, transform .6s; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* RULES */
+.rules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px; margin-bottom: 28px;
+}
+.rcard {
+  background: var(--card); border: 1px solid var(--border);
+  padding: 26px 24px; display: flex; gap: 20px; align-items: flex-start;
+  transition: border-color .3s, transform .3s;
+}
+.rcard:hover { border-color: rgba(74,222,128,.25); transform: translateY(-3px); }
+.rcard-num {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 28px; font-weight: 800; color: rgba(74,222,128,.18);
+  line-height: 1; flex-shrink: 0; width: 36px;
+}
+.rcard h3 {
+  font-family: 'Oxanium', sans-serif;
+  font-size: 13px; font-weight: 800; letter-spacing: 1px;
+  color: var(--white); margin-bottom: 8px;
+}
+.rcard p { font-size: 14px; line-height: 1.75; color: #4a724a; }
+.rules-note {
+  background: rgba(251,191,36,0.05);
+  border: 1px solid rgba(251,191,36,0.25);
+  padding: 18px 24px;
+  font-size: 14px; line-height: 1.7; color: #8a7a3a;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.rules-note span { font-size: 18px; color: var(--gold); flex-shrink: 0; }
+
+/* ANIMATIONS */
+@keyframes up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes blink {
+  0%,100% { opacity: 1; }
+  50%      { opacity: .25; }
+}
+
+/* MOBILE */
+@media (max-width: 640px) {
+  nav { padding: 0 20px; }
+  nav ul { display: none; }
+  .sec { padding: 60px 18px; }
+  .ip-display { flex-direction: column; }
+  .ip-display .lbl { border-right: none; border-bottom: 1px solid rgba(74,222,128,.2); }
+  .btns { flex-direction: column; align-items: stretch; }
+  .btn { justify-content: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo"><em>SAURON</em>MC</div>
+  <ul>
+    <li><a href="#sunucu">SUNUCU</a></li>
+    <li><a href="#modlar">MODLAR</a></li>
+    <li><a href="#kurallar">KURALLAR</a></li>
+    <li><a href="#adminler">ADMİNLER</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <div class="hero-live">
+    <span class="dot"></span>SUNUCU AÇIK
+  </div>
+
+  <h1><em>SAURON</em>MC</h1>
+  <div class="hero-sub">MİNECRAFT SUNUCUSU</div>
+
+  <p>Türkiye'nin en iyi Minecraft sunucusuna katıl.<br>SMP ve Towny modlarıyla eşsiz macera seni bekliyor.</p>
+
+  <div class="ip-display">
+    <span class="lbl">SUNUCU IP</span>
+    <span class="val">oyna-sauron.world</span>
+  </div>
+
+  <div class="btns">
+    <button class="btn btn-fill" id="copyBtn" onclick="copyIP()">
+      ⊕ IP'Yİ KOPYALA
+    </button>
+
+  </div>
+
+  <div class="badges">
+    <span class="badge b-java">☕ JAVA VERSİYON</span>
+    <span class="badge b-bedrock">⬡ BEDROCK · PORT 19132</span>
+    <span class="badge b-live"><span class="dot"></span>CANLI</span>
+  </div>
+
+</section>
+
+<div class="d-grass"></div>
+<div class="d-dirt"></div>
+
+<!-- SUNUCU BİLGİLERİ -->
+<div class="sec" id="sunucu">
+  <p class="sec-eyebrow">BAĞLANTI BİLGİLERİ</p>
+  <h2 class="sec-title">Sunucuya <span>Nasıl Girilir?</span></h2>
+  <div class="grid-4">
+    <div class="icard reveal">
+      <div class="icard-icon">☕</div>
+      <h3>JAVA VERSİYON</h3>
+      <p>IP: <strong>oyna-sauron.world</strong><br>Tüm Java sürümleri desteklenir.</p>
+    </div>
+    <div class="icard reveal">
+      <div class="icard-icon">⬡</div>
+      <h3>BEDROCK VERSİYON</h3>
+      <p>IP: <strong>oyna-sauron.world</strong><br>Port: <strong>19132</strong><br>Mobil, konsol ve PC destekli.</p>
+    </div>
+    <div class="icard reveal">
+      <div class="icard-icon">🌍</div>
+      <h3>TÜRKÇE TOPLULUK</h3>
+      <p>Arkadaşlarınla keşfet, inşa et ve savaş. Her oyuncu için bir yer var!</p>
+    </div>
+    <div class="icard reveal">
+      <div class="icard-icon">🛡️</div>
+      <h3>AKTİF YÖNETİM</h3>
+      <p>7/24 aktif admin ekibi. Sorunların anında çözülür, hile yoktur!</p>
+    </div>
+  </div>
+</div>
+
+<div class="d-dirt"></div>
+<div class="d-grass"></div>
+
+<!-- OYUN MODLARI -->
+<div class="sec" id="modlar">
+  <p class="sec-eyebrow">OYUN MODLARI</p>
+  <h2 class="sec-title">Ne Oynamak <span>İstersin?</span></h2>
+  <div class="grid-2">
+    <div class="mcard smp reveal">
+      <div class="mcard-tag">MOD 01</div>
+      <h2>SMP</h2>
+      <p>Klasik hayatta kalma deneyimi. Kendi başına ya da arkadaşlarınla hayatta kal, inşa et ve keşfet.</p>
+      <ul class="feats">
+        <li>Özgür dünya keşfi</li>
+        <li>PvP ve PvE mücadeleleri</li>
+        <li>Ekonomi ve ticaret sistemi</li>
+        <li>Kişisel ev kurma imkânı</li>
+        <li>Özel etkinlikler ve ödüller</li>
+      </ul>
+    </div>
+    <div class="mcard towny reveal">
+      <div class="mcard-tag">MOD 02</div>
+      <h2>TOWNY</h2>
+      <p>Şehirler kur, uluslar yönet. Diğer oyuncularla ittifak ya da savaş, imparatorluğunu inşa et.</p>
+      <ul class="feats">
+        <li>Şehir kurma ve yönetimi</li>
+        <li>Ulus sistemi ve savaşlar</li>
+        <li>Arazi sahipliği ve koruma</li>
+        <li>Vergi ve ekonomi yönetimi</li>
+        <li>Siyasi güç mücadeleleri</li>
+      </ul>
+      <a class="btn btn-map" href="http://45.8.196.30:25035" target="_blank" rel="noopener" style="margin-top:28px;">
+        🗺 CANLI HARİTAYI AÇ
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="d-grass"></div>
+<div class="d-dirt"></div>
+
+<!-- KURALLAR -->
+<div class="sec" id="kurallar">
+  <p class="sec-eyebrow">SUNUCU KURALLARI</p>
+  <h2 class="sec-title">Kuralları <span>Oku, Keyifle Oyna</span></h2>
+  <div class="rules-grid">
+
+    <div class="rcard reveal">
+      <div class="rcard-num">01</div>
+      <div>
+        <h3>Admine Saygısızlık Yasaktır</h3>
+        <p>Admin ekibine karşı kaba, saygısız veya küçük düşürücü davranışlar kesinlikle yasaktır. Yönetim kararlarına saygı göster.</p>
+      </div>
+    </div>
+
+    <div class="rcard reveal">
+      <div class="rcard-num">02</div>
+      <div>
+        <h3>Küfür ve Hakaret Yasaktır</h3>
+        <p>Diğer oyunculara ya da adminlere küfür, hakaret ve argo kullanmak yasaktır. Saygılı bir dil kullan.</p>
+      </div>
+    </div>
+
+    <div class="rcard reveal">
+      <div class="rcard-num">03</div>
+      <div>
+        <h3>Hile ve Exploit Yasaktır</h3>
+        <p>Her türlü hile programı, mod veya exploit kullanımı kesin ban ile sonuçlanır. Fair play zorunludur.</p>
+      </div>
+    </div>
+
+    <div class="rcard reveal">
+      <div class="rcard-num">04</div>
+      <div>
+        <h3>Sunucu Açığı Bildir</h3>
+        <p>Sunucuda bir açık ya da hata keşfedersen bunu adminlere iletmek zorundasın. Açığı istismar eden ya da bildirmeyen oyuncular kalıcı olarak banlanır.</p>
+      </div>
+    </div>
+
+    <div class="rcard reveal">
+      <div class="rcard-num">06</div>
+      <div>
+        <h3>Spam ve Reklam Yasaktır</h3>
+        <p>Sohbet üzerinde spam yapmak, başka sunucu reklamı yapmak veya flood atmak yasaktır. Temiz bir sohbet ortamı koru.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="rules-note reveal">
+    <span>⚠</span>
+    Kuralları ihlal eden oyuncular uyarı, geçici ban veya kalıcı ban ile cezalandırılabilir. Bilmemek mazeret sayılmaz.
+  </div>
+</div>
+<div class="sec" id="adminler">
+  <p class="sec-eyebrow">YÖNETİM EKİBİ</p>
+  <h2 class="sec-title">Admin <span>Ekibi</span></h2>
+  <div class="grid-3">
+    <div class="acard reveal">
+      <div class="acard-av"><span class="crown">👑</span>⚔️</div>
+      <h3>yonumenceerk</h3>
+      <span class="acard-role">★ ADMİN</span>
+    </div>
+    <div class="acard reveal">
+      <div class="acard-av"><span class="crown">👑</span>🛡️</div>
+      <h3>ArasTURKO</h3>
+      <span class="acard-role">★ ADMİN</span>
+    </div>
+    <div class="acard reveal">
+      <div class="acard-av"><span class="crown">👑</span>⚡</div>
+      <h3>OMER1KING</h3>
+      <span class="acard-role">★ ADMİN</span>
+    </div>
+  </div>
+</div>
+
+<div class="d-dirt"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo">⚔ SAURONMC</div>
+  <p>Java & Bedrock Destekli · SMP & Towny Modları</p>
+  <div class="f-ip">oyna-sauron.world</div>
+  <p style="margin-top:20px;font-size:13px;">© 2026 SauronMC · Tüm hakları saklıdır</p>
+</footer>
+
+<script>
+function copyIP() {
+  navigator.clipboard.writeText('oyna-sauron.world').then(() => {
+    const b = document.getElementById('copyBtn');
+    b.textContent = '✓ KOPYALANDI';
+    b.classList.add('copied');
+    setTimeout(() => { b.innerHTML = "⊕ IP'Yİ KOPYALA"; b.classList.remove('copied'); }, 2200);
+  });
+}
+const io = new IntersectionObserver(es => {
+  es.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('in'), i * 90);
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
